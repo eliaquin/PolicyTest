@@ -40,12 +40,16 @@ namespace PolicyTest
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddScoped<IAuthorizationHandler, MinimumAgeRequiredHandler>();
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddAuthorization(options => { options.AddPolicy("AdultsOnly", policy => policy.Requirements.Add(new MinimumAgeRequired(18))); });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdultsOnly", policy => policy.Requirements.Add(new MinimumAgeRequired(18)));
+            });
 
-            services.AddScoped<IAuthorizationHandler, MinimumAgeRequiredHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
